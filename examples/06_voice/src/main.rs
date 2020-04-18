@@ -220,21 +220,8 @@ fn ping(context: &mut Context, msg: &Message) -> CommandResult {
 }
 
 #[command]
-fn play(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
-    let url = match args.single::<String>() {
-        Ok(url) => url,
-        Err(_) => {
-            check_msg(msg.channel_id.say(&ctx.http, "Must provide a URL to a video or audio"));
-
-            return Ok(());
-        },
-    };
-
-    if !url.starts_with("http") {
-        check_msg(msg.channel_id.say(&ctx.http, "Must provide a valid URL"));
-
-        return Ok(());
-    }
+fn play(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
+    let url = args.message();
 
     let guild_id = match ctx.cache.read().guild_channel(msg.channel_id) {
         Some(channel) => channel.read().guild_id,

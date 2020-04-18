@@ -24,7 +24,6 @@ pub use self::{
         opus,
         pcm,
         ytdl,
-        ytdl_search
     }
 };
 pub use audiopus::Bitrate;
