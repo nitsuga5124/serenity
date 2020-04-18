@@ -221,7 +221,7 @@ fn ping(context: &mut Context, msg: &Message) -> CommandResult {
 
 #[command]
 fn play(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
-    let url = args.message();
+    let song = args.message();
 
     let guild_id = match ctx.cache.read().guild_channel(msg.channel_id) {
         Some(channel) => channel.read().guild_id,
@@ -236,7 +236,7 @@ fn play(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let mut manager = manager_lock.lock();
 
     if let Some(handler) = manager.get_mut(guild_id) {
-        let source = match voice::ytdl(&url) {
+        let source = match voice::ytdl(&song) {
             Ok(source) => source,
             Err(why) => {
                 println!("Err starting source: {:?}", why);
