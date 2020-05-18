@@ -353,6 +353,7 @@ pub async fn command(
     }
 
     let mut last = Err(ParseError::UnrecognisedCommand(None));
+    let mut is_prefixless = false;
 
     for (group, map) in groups {
         match map {
@@ -364,7 +365,9 @@ pub async fn command(
                     return res;
                 }
 
-                last = res;
+                if !is_prefixless {
+                    last = res;
+                }
             }
             Map::Prefixless(subgroups, commands) => {
                 let res = handle_group(stream, ctx, msg, config, subgroups).await;
@@ -384,6 +387,7 @@ pub async fn command(
                 }
 
                 last = res;
+                is_prefixless = true;
             }
         }
     }
